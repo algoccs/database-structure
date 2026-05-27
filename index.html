@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 3: Modelado Estructural y Diagramas de Clase</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            navy: '#0b132b',
+                            darkBlue: '#1c2541',
+                            blue: '#3a506b',
+                            teal: '#06b6d4',
+                            cyan: '#22d3ee',
+                            violet: '#a78bfa',
+                            emerald: '#10b981'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .slide-transition {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1c2541;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #06b6d4;
+            border-radius: 4px;
+        }
+        /* Efecto de pulso sutil para elementos activos */
+        .glow-active {
+            box-shadow: 0 0 15px rgba(34, 211, 238, 0.4);
+            border-color: #22d3ee !important;
+        }
+    </style>
+</head>
+<body class="bg-[#0b1329] text-slate-100 min-h-screen flex flex-col justify-between overflow-x-hidden font-sans">
+
+    <!-- Barra Superior de Control de Presentación -->
+    <header class="bg-[#111c3a] border-b border-[#22325a] px-6 py-3 flex justify-between items-center z-50 shadow-md">
+        <div class="flex items-center gap-3">
+            <span class="bg-brand-teal/20 text-brand-cyan text-xs font-bold px-3 py-1.5 rounded-full border border-brand-teal/30 tracking-wider uppercase">Módulo 3 · Lección 4</span>
+            <h1 class="text-sm font-semibold tracking-tight text-slate-300 hidden md:inline">Planos de Software: Del Mapa de Datos al Código</h1>
+        </div>
+        <div class="flex items-center gap-4">
+            <!-- Interruptor para Vista de Profesor (Metodológica) -->
+            <button id="teacherModeBtn" onclick="toggleTeacherMode()" class="flex items-center gap-2 bg-[#0b132b] hover:bg-brand-darkBlue border border-[#475569] hover:border-brand-teal px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 transition-all duration-200">
+                <i class="fa-solid fa-eye text-brand-teal" id="teacherEyeIcon"></i>
+                <span>Vista Profesor</span>
+                <span id="teacherBadge" class="bg-red-500/20 text-red-400 text-[10px] font-bold px-1.5 py-0.2 rounded">OFF</span>
+            </button>
+            <button onclick="toggleFullscreen()" class="text-slate-400 hover:text-white transition">
+                <i class="fa-solid fa-expand text-lg"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Contenedor Principal de la Diapositiva Activa -->
+    <main class="flex-grow flex items-center justify-center p-4 md:p-8 max-w-7xl mx-auto w-full">
+        
+        <!-- ================= DIAPOSITIVA 1: PORTADA ================= -->
+        <section id="slide1" class="slide-transition w-full bg-[#111c3e] border border-[#22356b] rounded-2xl p-8 md:p-12 shadow-2xl flex flex-col justify-between min-h-[580px] relative overflow-hidden">
+            <div class="absolute -top-40 -right-40 w-96 h-96 bg-brand-teal/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-brand-violet/10 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="flex justify-between items-start">
+                <span class="text-brand-cyan font-semibold text-sm tracking-wider uppercase flex items-center gap-2">
+                    <i class="fa-solid fa-compass-drafting"></i> Arquitectura Visual
+                </span>
+                <span class="text-slate-500 text-xs font-mono">Diapositiva 1/14</span>
+            </div>
+            
+            <div class="my-auto max-w-3xl">
+                <h2 class="text-4xl md:text-6xl font-extrabold text-white tracking-tight leading-tight">
+                    Modelado Estructural:<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-cyan via-brand-teal to-brand-violet">Planos de Bases de Datos y Clases</span>
+                </h2>
+                <p class="text-slate-400 mt-6 text-lg md:text-xl leading-relaxed">
+                    Aprende a diseñar las estructuras visuales que sostienen la información y el comportamiento del software moderno, desde diagramas de entidad-relación hasta diagramas de clases UML.
+                </p>
+            </div>
+            
+            <div class="flex flex-wrap gap-4 items-center border-t border-[#22356b] pt-6">
+                <span class="text-slate-500 text-xs md:text-sm">Escuela Internacional de Programación</span>
+                <div class="h-1.5 w-1.5 bg-brand-teal rounded-full"></div>
+                <span class="text-brand-teal text-xs md:text-sm font-semibold">mars.alg.academy</span>
+            </div>
+
+            <!-- NOTAS METODOLÓGICAS -->
+            <div class="teacher-notes hidden mt-6 p-4 bg-amber-950/40 border-l-4 border-amber-500 rounded text-xs text-amber-200">
+                <h5 class="font-bold mb-1"><i class="fa-solid fa-chalkboard-user"></i> NOTA METODOLÓGICA:</h5>
+                Establezca confianza inicial. Explique que antes de escribir código o bases de datos complejas, los arquitectos de software dibujan mapas lógicos. Hoy aprenderán a leer y crear esos planos visuales.
+            </div>
+        </section>
+
+        <!-- ================= DIAPOSITIVA 2: EL PODER DE DIBUJAR EL CÓDIGO ================= -->
+        <section id="slide2" class="slide-transition w-full bg-[#111c3e] border border-[#22356b] rounded-2xl p-8 md:p-12 shadow-2xl flex flex-col justify-between min-h-[580px] hidden">
+            <div class="flex justify-between items-start">
+                <span class="text-brand-cyan font-semibold text-sm tracking-wider uppercase">Discusión Inicial</span>
+                <span class="text-slate-500 text-xs font-mono">Diapositiva 2/14</span>
+            </div>
+            
+            <div class="my-auto">
+                <h3 class="text-2xl md:text-3xl font-bold text-white mb-4">¿Por qué dibujamos antes de programar?</h3>
+                <p class="text-slate-400 mb-6 text-sm md:text-base leading-relaxed">
+                    Si vas a construir una casa, no empiezas a pegar ladrillos al azar; primero necesitas un **plano**. En el software ocurre exactamente lo mismo. 
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-4">
+                    <!-- Tarjeta: La idea desordenada -->
+                    <div class="bg-red-950/20 border border-red-900/40 rounded-xl p-5 flex flex-col justify-between">
+                        <div>
+                            <span class="text-red-400 font-bold text-xs uppercase tracking-wider block mb-2"><i class="fa-solid fa-triangle-exclamation"></i> Idea Sin Estructura</span>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                "Quiero un sistema para mi escuela. Un estudiante pertenece a un curso, pero también tiene reportes de asistencia y de ventanas rotas. Además, cada escuela tiene directores, y hay materias..."
+                            </p>
+                        </div>
+                        <p class="text-[11px] text-red-400/80 mt-4 italic">// Demasiado texto. Es fácil omitir detalles importantes o crear inconsistencias.</p>
+                    </div>
+                    
+                    <!-- Tarjeta: El Plano Estructurado -->
+                    <div class="bg-brand-teal/10 border border-brand-teal/30 rounded-xl p-5 flex flex-col justify-between">
+                        <div>
+                            <span class="text-brand-cyan font-bold text-xs uppercase tracking-wider block mb-2"><i class="fa-solid fa-diagram-project"></i> Modelo Visual (Planos)</span>
+                            <div class="flex items-center justify-center gap-3 h-24 border border-dashed border-brand-teal/20 rounded-lg bg-slate-900/40">
+                                <span class="text-[10px] font-mono bg-brand-darkBlue p-2 rounded border border-brand-teal/30">Estudiante</span>
+                                <i class="fa-solid fa-arrow-right-long text-brand-teal"></i>
+                                <span class="text-[10px] font-mono bg-brand-darkBlue p-2 rounded border border-brand-teal/30">Escuela</span>
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-brand-cyan mt-4 font-medium"><i class="fa-solid fa-circle-check"></i> El plano visual define con precisión milimétrica qué datos existen y cómo interactúan.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NOTAS METODOLÓGICAS -->
+            <div class="teacher-notes hidden mt-6 p-4 bg-amber-950/40 border-l-4 border-amber-500 rounded text-xs text-amber-200">
+                <h5 class="font-bold mb-1"><i class="fa-solid fa-chalkboard-user"></i> NOTA METODOLÓGICA:</h5>
+                Pregunte a los estudiantes: ¿Cómo representarían una relación entre un libro de biblioteca y el lector? ¿Cómo evitamos perder libros? Diríjalos hacia el concepto de "dibujar" las conexiones.
+            </div>
+        </section>
+
+        <!-- ================= DIAPOSITIVA 3: ENTIDADES Y ATRIBUTOS ================= -->
+        <section id="slide3" class="slide-transition w-full bg-[#111c3e] border border-[#22356b] rounded-2xl p-8 md:p-12 shadow-2xl flex flex-col justify-between min-h-[580px] hidden">
+            <div class="flex justify-between items-start">
+                <span class="text-brand-cyan font-semibold text-sm tracking-wider uppercase">Bases del Modelado</span>
+                <span class="text-slate-500 text-xs font-mono">Diapositiva 3/14</span>
+            </div>
+            
+            <div class="my-auto">
+                <div class="flex flex-col md:flex-row gap-8 items-center">
+                    <div class="w-full md:w-1/2">
+                        <span class="text-xs font-bold text-brand-cyan uppercase tracking-widest block mb-1">Estructura Básica</span>
+                        <h3 class="text-2xl md:text-3xl font-bold text-white mb-4">¿Cómo se compone una Entidad y un Atributo?</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                            En un **Diagrama Entidad-Relación (DER)**, representamos los objetos del mundo real y sus características utilizando estos dos conceptos:
+                        </p>
+                        <ul class="space-y-4 text-xs md:text-sm text-slate-300">
+                            <li class="flex gap-2">
+                                <span class="bg-brand-teal/20 text-brand-cyan font-bold px-2 py-1 rounded h-fit">Entidad</span>
+                                <p><strong>El "Qué" del sistema:</strong> Es un objeto real o abstracto del cual queremos almacenar datos. Se dibuja tradicionalmente como un **rectángulo** (Ej: Estudiante, Automóvil, Transacción).</p>
+                            </li>
+                            <li class="flex gap-2">
+                                <span class="bg-brand-violet/20 text-brand-violet font-bold px-2 py-1 rounded h-fit">Atributo</span>
+                                <p><strong>Las propiedades:</strong> Son las variables o características individuales de la entidad. Se listan dentro del contenedor (Ej: nombre, edad, matrícula).</p>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="w-full md:w-1/2 flex justify-center">
+                        <!-- Representación Visual Estilizada -->
+                        <div class="w-72 bg-slate-900/60 border-2 border-brand-teal rounded-xl overflow-hidden shadow-2xl">
+                            <div class="bg-brand-teal/20 border-b border-brand-teal/40 py-3 px-4 text-center">
+                                <span class="text-xs uppercase tracking-widest text-slate-400">Entidad</span>
+                                <h4 class="font-extrabold text-white text-base font-mono">Estudiante</h4>
+                            </div>
+                            <div class="p-4 space-y-3 font-mono text-xs">
+                                <div class="flex justify-between items-center bg-[#111c3a] p-2 rounded border border-[#22325a]">
+                                    <span class="text-brand-cyan">id_estudiante</span>
+                                    <span class="text-slate-500 text-[10px]">Atributo Clave</span>
+                                </div>
+                                <div class="flex justify-between items-center bg-[#111c3a] p-2 rounded border border-[#22325a]">
+                                    <span class="text-slate-300">nombre</span>
+                                    <span class="text-slate-500 text-[10px]">Atributo</span>
+                                </div>
+                                <div class="flex justify-between items-center bg-[#111c3a] p-2 rounded border border-[#22325a]">
+                                    <span class="text-slate-300">fecha_nacimiento</span>
+                                    <span class="text-slate-500 text-[10px]">Atributo</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NOTAS METODOLÓGICAS -->
+            <div class="teacher-notes hidden mt-6 p-4 bg-amber-950/40 border-l-4 border-amber-500 rounded text-xs text-amber-200">
+                <h5 class="font-bold mb-1"><i class="fa-solid fa-chalkboard-user"></i> NOTA METODOLÓGICA:</h5>
+                Señale el rectángulo y explique que la Entidad funciona como una plantilla de tarjeta. Los atributos son los campos vacíos de la tarjeta que rellenará cada estudiante de verdad.
+            </div>
+        </section>
+
+        <!-- ================= DIAPOSITIVA 4: EL PASO AL DIAGRAMA DE CLASES (UML) ================= -->
+        <section id="slide4" class="slide-transition w-full bg-[#111c3e] border border-[#22356b] rounded-2xl p-8 md:p-12 shadow-2xl flex flex-col justify-between min-h-[580px] hidden">
+            <div class="flex justify-between items-start">
+                <span class="text-brand-cyan font-semibold text-sm tracking-wider uppercase">De Datos a Programación</span>
+                <span class="text-slate-500 text-xs font-mono">Diapositiva 4/14</span>
+            </div>
+            
+            <div class="my-auto">
+                <div class="flex flex-col md:flex-row gap-8 items-center">
+                    <div class="w-full md:w-1/2">
+                        <span class="text-xs font-bold text-brand-violet uppercase tracking-widest block mb-1">Del DER a UML</span>
+                        <h3 class="text-2xl md:text-3xl font-bold text-white mb-4">¿Cómo sumamos acciones? El Método</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                            En las bases de datos solo guardamos datos estáticos (entidades y atributos). Pero en la programación real, los objetos también realizan **acciones** o **comportamientos**.
+                        </p>
+                        <p class="text-slate-300 text-xs md:text-sm leading-relaxed mb-4">
+                            Para esto, pasamos del modelo de datos al **Diagrama de Clases UML**, donde sumamos una tercera pieza fundamental:
+                        </p>
+                        <div class="bg-brand-violet/10 border border-brand-violet/30 rounded-xl p-4 flex gap-3">
+                            <div class="w-10 h-10 bg-brand-violet/20 rounded-lg flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-bolt text-brand-violet text-lg"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white text-xs md:text-sm">El Método (Acción)</h4>
+                                <p class="text-slate-400 text-xs mt-1">Es una función o comportamiento interno de la clase que interactúa con los atributos o ejecuta lógica operativa (Ej: inscribirMateria(), calcularPromedio()).</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="w-full md:w-1/2 flex justify-center">
+                        <div class="grid grid-cols-1 gap-4 items-center w-full max-w-sm">
+                            <!-- Flecha conceptual -->
+                            <div class="text-center p-3 bg-slate-900/60 border border-[#22325a] rounded-xl text-xs font-mono">
+                                <span class="text-slate-400 block mb-1">Entidad (Solo Datos)</span>
+                                <div class="font-bold text-brand-cyan">Datos: Estudiante [ID, Nombre]</div>
+                            </div>
+                            <div class="flex justify-center text-brand-violet animate-bounce"><i class="fa-solid fa-down-long text-xl"></i></div>
+                            <!-- Clase final -->
+                            <div class="text-center p-4 bg-brand-violet/10 border-2 border-brand-violet rounded-xl text-xs font-mono shadow-lg">
+                                <span class="text-brand-violet font-bold block mb-1">Clase UML (Datos + Acciones)</span>
+                                <div class="text-slate-300 font-semibold mb-2">Estudiante</div>
+                                <div class="text-slate-400 text-[10px] mb-2 border-b border-brand-violet/20 pb-2">Atributos: ID, Nombre, Edad</div>
+                                <div class="text-brand-violet text-[10px] font-bold">Métodos: calcularEdad(), esMayorDeEdad()</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NOTAS METODOLÓGICAS -->
+            <div class="teacher-notes hidden mt-6 p-4 bg-amber-950/40 border-l-4 border-amber-500 rounded text-xs text-amber-200">
+                <h5 class="font-bold mb-1"><i class="fa-solid fa-chalkboard-user"></i> NOTA METODOLÓGICA:</h5>
+                Destaque que los métodos son verbos (correr, calcular, matricular), mientras que los atributos son sustantivos o características (nombre, color, tamaño). Esta regla gramatical les ayuda mucho a programar y diseñar.
+            </div>
+        </section>
+
+        <!-- ================= DIAPOSITIVA 5: ANATOMÍA DE UNA CLASE UML ================= -->
+        <section id="slide5" class="slide-transition w-full bg-[#111c3e] border border-[#22356b] rounded-2xl p-8 md:p-12 shadow-2xl flex flex-col justify-between min-h-[580px] hidden">
+            <div class="flex justify-between items-start">
+                <span class="text-brand-cyan font-semibold text-sm tracking-wider uppercase">Sintaxis del Diagrama</span>
+                <span class="text-slate-500 text-xs font-mono">Diapositiva 5/14</span>
+                
+            </div>
+            
+            <div class="my-auto">
+                <h3 class="text-2xl font-bold text-white mb-2 text-center">Anatomía Estándar de una Clase UML</h3>
+                <p class="text-slate-400 text-xs md:text-sm mb-6 text-center">La manera correcta de representar una clase es mediante una caja rectangular dividida estrictamente en **tres secciones**:</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <!-- Caja de exploración interactiva de Clase -->
+                    <div class="bg-slate-900 border-2 border-[#22325a] rounded-xl overflow-hidden shadow-2xl font-mono text-xs" id="umlSpecimenBox">
+                        <!-- Sección 1: Nombre -->
+                        <div class="p-3 bg-[#111c3a] border-b border-[#22325a] text-center cursor-pointer transition hover:bg-brand-teal/10" onclick="highlightUMLPart('name')">
+                            <span class="text-[9px] text-slate-500 block">SECCIÓN 1: NOMBRE</span>
+                            <span class="font-bold text-white text-sm" id="specimenName">Estudiante</span>
+                        </div>
+                        <!-- Sección 2: Atributos -->
+                        <div class="p-4 border-b border-[#22325a] space-y-1 cursor-pointer transition hover:bg-brand-violet/10" onclick="highlightUMLPart('attrs')">
+                            <span class="text-[9px] text-slate-500 block mb-1">SECCIÓN 2: ATRIBUTOS</span>
+                            <div class="text-slate-300" id="specimenAttrs">
+                                <div><span class="text-brand-cyan">+</span> id_estudiante : int</div>
+                                <div><span class="text-brand-cyan">+</span> nombre : String</div>
+                                <div><span class="text-brand-cyan">-</span> promedioNotas : float</div>
+                            </div>
+                        </div>
+                        <!-- Sección 3: Métodos -->
+                        <div class="p-4 space-y-1 cursor-pointer transition hover:bg-brand-emerald/10" onclick="highlightUMLPart('methods')">
+                            <span class="text-[9px] text-slate-500 block mb-1">SECCIÓN 3: MÉTODOS</span>
+                            <div class="text-slate-300" id="specimenMethods">
+                                <div><span class="text-brand-emerald">+</span> obtenerPromedio() : float</div>
+                                <div><span class="text-brand-emerald">+</span> inscribirMateria(materia : String)</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tarjeta de explicación dinámica -->
+                    <div class="bg-[#111c3a] border border-[#22325a] rounded-xl p-5" id="specimenExplanation">
+                        <h4 class="font-bold text-brand-cyan text-sm mb-2" id="specimenTitle">Explora la Clase</h4>
+                        <p class="text-slate-400 text-xs leading-relaxed" id="specimenDesc">
+                            Haz clic en cualquiera de las secciones de la caja de la izquierda para ver su rol estructural, sus reglas de formato y la sintaxis que debes emplear.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NOTAS METODOLÓGICAS -->
+            <div class="teacher-notes hidden mt-6 p-4 bg-amber-950/40 border-l-4 border-amber-500 rounded text-xs text-amber-200">
+                <h5 class="font-bold mb-1"><i class="fa-solid fa-chalkboard-user"></i> NOTA METODOLÓGICA:</h5>
+                Muestre la nomenclatura estricta. La visibilidad (`+` para público, `-` para privado), el tipo de dato precedido por dos puntos (`: String`), y los paréntesis `()` que distinguen a las funciones/métodos de los atributos.
+            </div>
+        </section>
+
+        <!-- ================= DIAPOSITIVA 6: RELACIONES BÁSICAS Y TIPOS DE LÍNEAS ================= -->
+        <section id="slide6" class="slide-transition w-full bg-[#111c3e] border border-[#22356b] rounded-2xl p-8 md:p-12 shadow-2xl flex flex-col justify-between min-h-[580px] hidden">
+            <div class="flex justify-between items-start">
+                <span class="text-brand-cyan font-semibold text-sm tracking-wider uppercase">Relaciones del Plano</span>
+                <span class="text-slate-500 text-xs font-mono">Diapositiva 6/14</span>
+            </div>
+            
+            <div class="my-auto">
+                <h3 class="text-2xl font-bold text-white mb-2">Conectando las Piezas: Líneas de Relación</h3>
+                <p class="text-slate-400 text-xs md:text-sm mb-6">En UML, las relaciones indican cómo se comunican las clases. La forma física y dirección de las líneas cuenta una historia lógica muy precisa:</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <!-- Selector Interactivo de Línea -->
+                    <div class="space-y-3">
+                        <button onclick="selectRelationLine('association')" class="relation-tab-btn w-full text-left bg-brand-darkBlue border-2 border-brand-teal p-3 rounded-xl transition flex items-center gap-3">
+                            <span class="w-2.5 h-2.5 bg-brand-cyan rounded-full"></span>
+                            <div>
+                                <h4 class="font-bold text-xs text-slate-200">Asociación (Línea Continua)</h4>
+                                <p class="text-[10px] text-slate-400">Indica una relación directa y duradera entre objetos.</p>
+                            </div>
+                        </button>
+                        <button onclick="selectRelationLine('dependency')" class="relation-tab-btn w-full text-left bg-slate-900 border border-[#22325a] hover:border-brand-teal/50 p-3 rounded-xl transition flex items-center gap-3">
+                            <span class="w-2.5 h-2.5 bg-brand-violet rounded-full"></span>
+                            <div>
+                                <h4 class="font-bold text-xs text-slate-200">Dependencia (Línea Discontinua / Flecha)</h4>
+                                <p class="text-[10px] text-slate-400">Una clase usa temporalmente a otra (un cambio en una afecta a la otra).</p>
+                            </div>
+                        </button>
+                    </div>
+                    
+                    <!-- Visualizador Dinámico de Línea -->
+                    <div class="bg-slate-950 p-6 rounded-xl border border-[#22325a] flex flex-col items-center justify-center min-h-[220px]">
+                        <div class="flex items-center justify-around w-full mb-6">
+                            <span class="bg-brand-darkBlue border border-[#22325a] px-3 py-2 rounded text-[10px] font-mono text-slate-300">Clase A</span>
+                            
+                            <!-- SVG Renderizado Dinámicamente -->
+                            <div class="flex-grow flex items-center justify-center px-4 relative">
+                                <svg width="120" height="30" viewBox="0 0 120 30" class="w-full">
+                                    <!-- Línea Dinámica -->
+                                    <path id="relationSVGPath" d="M 10 15 L 110 15" stroke="#22d3ee" stroke-width="2" stroke-dasharray="0" fill="none" />
+                                    <!-- Flecha de fin -->
+                                    <polygon id="relationSVGArrow" points="110,10 120,15 110,20" fill="#22d3ee" />
+                                </svg>
+                            </div>
+                            
+                            <span class="bg-brand-darkBlue border border-[#22325a] px-3 py-2 rounded text-[10px] font-mono text-slate-300">Clase B</span>
+                        </div>
+                        
+                        <div class="text-center max-w-sm">
+                            <h4 class="font-bold text-brand-cyan text-xs mb-1" id="relationTitle">Asociación Directa</h4>
+                            <p class="text-[11px] text-slate-400" id="relationDesc">Un Estudiante está asociado a un Aula. Ambos existen de forma independiente en el sistema.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NOTAS METODOLÓGICAS -->
+            <div class="teacher-notes hidden mt-6 p-4 bg-amber-950/40 border-l-4 border-amber-500 rounded text-xs text-amber-200">
+                <h5 class="font-bold mb-1"><i class="fa-solid fa-chalkboard-user"></i> NOTA METODOLÓGICA:</h5>
+                Use el simulador interactivo para mostrar el cambio de la línea continua a discontinua. Recuerde: la flecha siempre apunta en la dirección de la lectura conceptual de la dependencia.
+            </div>
+        </section>
+
+        <!-- ================= DIAPOSITIVA 7: RELACIONES ESTRUCTURALES AVANZADAS ================= -->
+        <section id="slide7" class="slide-transition w-full bg-[#111c3e] border border-[#22356b] rounded-2xl p-8 md:p-12 shadow-2xl flex flex-col justify-between min-h-[580px] hidden">
+            <div class="flex justify-between items-start">
+                <span class="text-brand-cyan font-semibold text-sm tracking-wider uppercase">Complejidad Estructural</span>
+                <span class="text-slate-500 text-xs font-mono">Diapositiva 7/14</span>
+            </div>
+            
+            <div class="my-auto">
+                <h3 class="text-2xl font-bold text-white mb-2">Relaciones Especiales: Jerarquía y Posesión</h3>
+                <p class="text-slate-400 text-xs md:text-sm mb-6">Para representar el ciclo de vida y la herencia de los objetos, utilizamos estos tres tipos de relaciones con conectores específicos:</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Agregación -->
+                    <div class="bg-slate-900 border border-[#22325a] p-5 rounded-xl flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="bg-brand-teal/20 text-brand-cyan font-mono text-[9px] font-bold px-2 py-0.5 rounded">Agregación</span>
+                                <span class="font-mono text-slate-500 text-xs">&lt;&gt;--</span>
+                            </div>
+                            <h4 class="font-bold text-slate-200 text-sm">Relación "Tiene Un" débil</h4>
+                            <p class="text-slate-400 text-xs mt-2 leading-relaxed">
+                                Un objeto contenedor tiene otro objeto, pero si el contenedor es destruido, el objeto de dentro **sigue existiendo**.
+                            </p>
+                        </div>
+                        <p class="text-[11px] text-brand-cyan mt-4 italic font-medium">Ej: Una Escuela tiene Profesores. Si la escuela cierra, los profesores siguen vivos.</p>
+                    </div>
+
+                    <!-- Composición -->
+                    <div class="bg-slate-900 border border-[#22325a] p-5 rounded-xl flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="bg-brand-violet/20 text-brand-violet font-mono text-[9px] font-bold px-2 py-0.5 rounded">Composición</span>
+                                <span class="font-mono text-slate-500 text-xs">◆--</span>
+                            </div>
+                            <h4 class="font-bold text-slate-200 text-sm">Relación "Tiene Un" fuerte</h4>
+                            <p class="text-slate-400 text-xs mt-2 leading-relaxed">
+                                El objeto interno depende al 100% del ciclo de vida de su contenedor. Si el contenedor se destruye, las partes **dejan de existir**.
+                            </p>
+                        </div>
+                        <p class="text-[11px] text-brand-violet mt-4 italic font-medium">Ej: Un Libro tiene Páginas. Si el libro se quema, sus páginas desaparecen instantáneamente.</p>
+                    </div>
+
+                    <!-- Herencia -->
+                    <div class="bg-slate-900 border border-[#22325a] p-5 rounded-xl flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="bg-brand-emerald/20 text-brand-emerald font-mono text-[9px] font-bold px-2 py-0.5 rounded">Herencia</span>
+                                <span class="font-mono text-slate-500 text-xs">--▷</span>
+                            </div>
+                            <h4 class="font-bold text-slate-200 text-sm">Relación "Es Un"</h4>
+                            <p class="text-slate-400 text-xs mt-2 leading-relaxed">
+                                Una subclase hereda todas las propiedades y métodos de su superclase o clase padre para reutilizar código.
+                            </p>
+                        </div>
+                        <p class="text-[11px] text-brand-emerald mt-4 italic font-medium">Ej: Un Estudiante **es una** Persona. Hereda nombre, apellido y fecha de nacimiento.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NOTAS METODOLÓGICAS -->
+            <div class="teacher-notes hidden mt-6 p-4 bg-amber-950/40 border-l-4 border-amber-500 rounded text-xs text-amber-200">
+                <h5 class="font-bold mb-1"><i class="fa-solid fa-chalkboard-user"></i> NOTA METODOLÓGICA:</h5>
+                Haga hincapié en el rombo vacío (Agregación) y el rombo relleno (Composición). El ciclo de vida define si el rombo se llena o se queda vacío.
+            </div>
+        </section>
+
+        <!-- ================= DIAPOSITIVA 8: CARDINALIDAD NUMÉRICA ================= -->
+        <section id="slide8" class="slide-transition w-full bg-[#111c3e] border border-[#22356b] rounded-2xl p-8 md:p-12 shadow-2xl flex flex-col justify-between min-h-[580px] hidden">
+            <div class="flex justify-between items-start">
+                <span class="text-brand-cyan font-semibold text-sm tracking-wider uppercase">Límites y Reglas</span>
+                <span class="text-slate-500 text-xs font-mono">Diapositiva 8/14</span>
+            </div>
+            
+            <div class="my-auto">
+                <div class="flex flex-col md:flex-row gap-8 items-center">
+                    <div class="w-full md:w-1/2">
+                        <span class="text-xs font-bold text-brand-cyan uppercase tracking-widest block mb-1">Cardinalidad Estándar</span>
+                        <h3 class="text-2xl md:text-3xl font-bold text-white mb-4">¿Cuántos se conectan? Cardinalidad Numérica</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                            La cardinalidad define la cantidad de instancias de una clase que se relacionan con una sola instancia de la otra clase. En los diagramas UML tradicionales, se indica mediante números en los extremos de la línea:
+                        </p>
+                        <div class="grid grid-cols-2 gap-3 text-xs">
+                            <div class="bg-slate-900 p-3 rounded-lg border border-[#22325a]">
+                                <code class="text-brand-cyan font-bold block mb-1">1</code>
+                                <span class="text-slate-400">Exactamente uno</span>
+                            </div>
+                            <div class="bg-slate-900 p-3 rounded-lg border border-[#22325a]">
+                                <code class="text-brand-cyan font-bold block mb-1">0..1</code>
+                                <span class="text-slate-400">Cero o uno (Opcional)</span>
+                            </div>
+                            <div class="bg-slate-900 p-3 rounded-lg border border-[#22325a]">
+                                <code class="text-brand-cyan font-bold block mb-1">* o 0..*</code>
+                                <span class="text-slate-400">Cero o muchos</span>
+                            </div>
+                            <div class="bg-slate-900 p-3 rounded-lg border border-[#22325a]">
+                                <code class="text-brand-cyan font-bold block mb-1">1..*</code>
+                                <span class="text-slate-400">Uno o muchos (Obligatorio)</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="w-full md:w-1/2 flex justify-center">
+                        <!-- Ejemplo Visual de Cardinalidad Numérica -->
+                        <div class="bg-slate-900/60 p-6 rounded-xl border border-[#22325a] w-full max-w-sm text-center">
+                            <span class="text-[10px] font-bold text-slate-500 uppercase block mb-4">Ubicación de la Cardinalidad</span>
+                            <div class="flex justify-between items-center font-mono text-xs">
+                                <div class="bg-[#111c3a] border border-brand-teal/30 p-2.5 rounded">
+                                    <span class="text-white font-bold block">Estudiante</span>
+                                </div>
+                                
+                                <div class="flex-grow flex flex-col justify-center px-2 relative">
+                                    <div class="h-0.5 bg-slate-500 w-full relative">
+                                        <!-- Cardinalidad del Estudiante -->
+                                        <span class="absolute -top-5 left-1 font-bold text-brand-cyan">1..*</span>
+                                        <!-- Cardinalidad del Curso -->
+                                        <span class="absolute -top-5 right-1 font-bold text-brand-cyan">1</span>
+                                    </div>
+                                    <span class="text-[9px] text-slate-500 mt-2 block">Se lee al revés: Un Estudiante tiene un Curso. Un Curso tiene de uno a muchos estudiantes.</span>
+                                </div>
+                                
+                                <div class="bg-[#111c3a] border border-brand-teal/30 p-2.5 rounded">
+                                    <span class="text-white font-bold block">Curso</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NOTAS METODOLÓGICAS -->
+            <div class="teacher-notes hidden mt-6 p-4 bg-amber-950/40 border-l-4 border-amber-500 rounded text-xs text-amber-200">
+                <h5 class="font-bold mb-1"><i class="fa-solid fa-chalkboard-user"></i> NOTA METODOLÓGICA:</h5>
+                Enfatice cómo se lee: "Para saber cuántos estudiantes caben en un curso, miro la cardinalidad que está pegada a la entidad Estudiante".
+            </div>
+        </section>
+
+        <!-- ================= DIAPOSITIVA 9: NOTACIÓN CROW'S FOOT ================= -->
+        <section id="slide9" class="slide-transition w-full bg-[#111c3e] border border-[#22356b] rounded-2xl p-8 md:p-12 shadow-2xl flex flex-col justify-between min-h-[580px] hidden">
+            <div class="flex justify-between items-start">
+                <span class="text-brand-cyan font-semibold text-sm tracking-wider uppercase">Notaciones del Sector</span>
+                <span class="text-slate-500 text-xs font-mono">Diapositiva 9/14</span>
+            </div>
+            
+            <div class="my-auto">
+                <h3 class="text-2xl font-bold text-white mb-2 text-center">La Notación de Pata de Gallo (Crow's Foot)</h3>
+                <p class="text-slate-400 text-xs md:text-sm mb-6 text-center">Muy común en el diseño de bases de datos relacionales, reemplaza los números por iconos visuales en las terminales de las líneas:</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <!-- Exactamente Uno -->
+                    <div class="bg-slate-900 border border-[#22325a] p-4 rounded-xl text-center">
+                        <span class="text-slate-500 text-[10px] font-mono block mb-2">1 (Exactamente Uno)</span>
+                        <div class="flex justify-center my-3">
+                            <!-- SVG Pata de Gallo: Uno y Solo Uno -->
+                            <svg width="60" height="24" viewBox="0 0 60 24">
+                                <line x1="0" y1="12" x2="60" y2="12" stroke="#22d3ee" stroke-width="2" />
+                                <line x1="35" y1="4" x2="35" y2="20" stroke="#22d3ee" stroke-width="2" />
+                                <line x1="45" y1="4" x2="45" y2="20" stroke="#22d3ee" stroke-width="2" />
+                            </svg>
+                        </div>
+                        <p class="text-[11px] text-slate-300">Dos barras perpendiculares indican que debe ser **únicamente** uno.</p>
+                    </div>
+
+                    <!-- Cero o Uno -->
+                    <div class="bg-slate-900 border border-[#22325a] p-4 rounded-xl text-center">
+                        <span class="text-slate-500 text-[10px] font-mono block mb-2">0..1 (Cero o Uno)</span>
+                        <div class="flex justify-center my-3">
+                            <!-- SVG Pata de Gallo: Cero o Uno -->
+                            <svg width="60" height="24" viewBox="0 0 60 24">
+                                <line x1="0" y1="12" x2="60" y2="12" stroke="#22d3ee" stroke-width="2" />
+                                <circle cx="35" cy="12" r="5" stroke="#22d3ee" stroke-width="2" fill="#0b1329" />
+                                <line x1="48" y1="4" x2="48" y2="20" stroke="#22d3ee" stroke-width="2" />
+                            </svg>
+                        </div>
+                        <p class="text-[11px] text-slate-300">Un anillo vacío (cero) seguido de una barra (uno).</p>
+                    </div>
+
+                    <!-- Uno o Muchos -->
+                    <div class="bg-slate-900 border border-[#22325a] p-4 rounded-xl text-center">
+                        <span class="text-slate-500 text-[10px] font-mono block mb-2">1..* (Uno o Muchos)</span>
+                        <div class="flex justify-center my-3">
+                            <!-- SVG Pata de Gallo: Uno o Muchos -->
+                            <svg width="60" height="24" viewBox="0 0 60 24">
+                                <line x1="0" y1="12" x2="60" y2="12" stroke="#22d3ee" stroke-width="2" />
+                                <line x1="30" y1="4" x2="30" y2="20" stroke="#22d3ee" stroke-width="2" />
+                                <!-- Pata de gallo -->
+                                <line x1="40" y1="12" x2="52" y2="4" stroke="#22d3ee" stroke-width="2" />
+                                <line x1="40" y1="12" x2="52" y2="20" stroke="#22d3ee" stroke-width="2" />
+                            </svg>
+                        </div>
+                        <p class="text-[11px] text-slate-300">Una barra (uno) y un tridente que se expande (muchos).</p>
+                    </div>
+
+                    <!-- Cero o Muchos -->
+                    <div class="bg-slate-900 border border-[#22325a] p-4 rounded-xl text-center">
+                        <span class="text-slate-500 text-[10px] font-mono block mb-2">0..* (Cero o Muchos)</span>
+                        <div class="flex justify-center my-3">
+                            <!-- SVG Pata de Gallo: Cero o Muchos -->
+                            <svg width="60" height="24" viewBox="0 0 60 24">
+                                <line x1="0" y1="12" x2="60" y2="12" stroke="#22d3ee" stroke-width="2" />
+                                <circle cx="30" cy="12" r="5" stroke="#22d3ee" stroke-width="2" fill="#0b1329" />
+                                <!-- Pata de gallo -->
+                                <line x1="40" y1="12" x2="52" y2="4" stroke="#22d3ee" stroke-width="2" />
+                                <line x1="40" y1="12" x2="52" y2="20" stroke="#22d3ee" stroke-width="2" />
+                            </svg>
+                        </div>
+                        <p class="text-[11px] text-slate-300">Un anillo (cero) y el tridente del extremo (muchos).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NOTAS METODOLÓGICAS -->
+            <div class="teacher-notes hidden mt-6 p-4 bg-amber-950/40 border-l-4 border-amber-500 rounded text-xs text-amber-200">
+                <h5 class="font-bold mb-1"><i class="fa-solid fa-chalkboard-user"></i> NOTA METODOLÓGICA:</h5>
+                Muestre el tridente. Es un icono sumamente visual: al expandirse como dedos de gallo, representa visualmente la idea de múltiples registros o "muchos".
+            </div>
+        </section>
+
+        <!-- ================= DIAPOSITIVA 10: EJEMPLO PRÁCTICO 1 - EL CINE ================= -->
+        <section id="slide10" class="slide-transition w-full bg-[#111c3e] border border-[#22356b] rounded-2xl p-8 md:p-12 shadow-2xl flex flex-col justify-between min-h-[580px] hidden">
+            <div class="flex justify-between items-start">
+                <span class="text-brand-cyan font-semibold text-sm tracking-wider uppercase">Casos de Estudio</span>
+                <span class="text-slate-500 text-xs font-mono">Diapositiva 10/14</span>
+            </div>
+            
+            <div class="my-auto">
+                <h3 class="text-2xl font-bold text-white mb-2">Ejemplo Real 1: Cartelera de Cine</h3>
+                <p class="text-slate-400 text-xs md:text-sm mb-6">Analicemos este plano estructurado de 3 clases. Aplicamos atributos, métodos, relaciones y cardinalidad:</p>
+                
+                <!-- Lienzo de diagrama visual simplificado -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center p-6 bg-slate-950/40 rounded-xl border border-[#22325a] relative">
+                    
+                    <!-- Clase: Cine -->
+                    <div class="bg-slate-900 border-2 border-brand-teal rounded-lg font-mono text-[10px] overflow-hidden shadow-xl">
+                        <div class="bg-[#111c3a] p-2 text-center font-bold text-white border-b border-[#22325a]">Cine</div>
+                        <div class="p-2 border-b border-[#22325a] space-y-1 text-slate-300">
+                            <div>+ id_cine : int</div>
+                            <div>+ nombre : String</div>
+                            <div>+ direccion : String</div>
+                        </div>
+                        <div class="p-2 text-slate-300">
+                            <div>+ obtenerDireccion()</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Línea conector 1 -->
+                    <div class="flex flex-col items-center justify-center font-mono">
+                        <span class="text-[9px] text-brand-cyan mb-1">1 a Muchos (1..*)</span>
+                        <svg width="100" height="20" class="w-full">
+                            <line x1="0" y1="10" x2="100" y2="10" stroke="#22d3ee" stroke-width="2" />
+                            <!-- Pata de gallo en extremo derecho -->
+                            <line x1="90" y1="10" x2="100" y2="3" stroke="#22d3ee" stroke-width="2" />
+                            <line x1="90" y1="10" x2="100" y2="17" stroke="#22d3ee" stroke-width="2" />
+                        </svg>
+                        <span class="text-[9px] text-slate-500 mt-1">Asociación Directa</span>
+                    </div>
+
+                    <!-- Clase: HorarioFuncion -->
+                    <div class="bg-slate-900 border-2 border-brand-violet rounded-lg font-mono text-[10px] overflow-hidden shadow-xl">
+                        <div class="bg-[#111c3a] p-2 text-center font-bold text-white border-b border-[#22325a]">HorarioFuncion</div>
+                        <div class="p-2 border-b border-[#22325a] space-y-1 text-slate-300">
+                            <div>+ id_horario : int</div>
+                            <div>+ fecha_hora : Date</div>
+                            <div>+ sala_numero : int</div>
+                        </div>
+                        <div class="p-2 text-slate-300">
+                            <div>+ esDeFinDeSemana() : bool</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <p class="text-slate-300 text-xs mt-4 text-center bg-slate-900 p-2.5 rounded border border-[#22325a]">
+                    <i class="fa-solid fa-circle-info text-brand-cyan mr-2"></i> Un **Cine** tiene programados **Muchos Horarios** de funciones, pero una función en un horario específico pertenece a **Un solo Cine**.
+                </p>
+            </div>
+
+            <!-- NOTAS METODOLÓGICAS -->
+            <div class="teacher-notes hidden mt-6 p-4 bg-amber-950/40 border-l-4 border-amber-500 rounded text-xs text-amber-200">
+                <h5 class="font-bold mb-1"><i class="fa-solid fa-chalkboard-user"></i> NOTA METODOLÓGICA:</h5>
+                Muestre que la clase `HorarioFuncion` es el "puente" que une el cine con las horas del reloj. Esto les entrena para pensar en la lógica intermedia en programación.
+            </div>
+        </section>
+
+        <!-- ================= DIAPOSITIVA 11: EJEMPLO PRÁCTICO 2 - SISTEMA ESCOLAR ================= -->
+        <section id="slide11" class="slide-transition w-full bg-[#111c3e] border border-[#22356b] rounded-2xl p-8 md:p-12 shadow-2xl flex flex-col justify-between min-h-[580px] hidden">
+            <div class="flex justify-between items-start">
+                <span class="text-brand-cyan font-semibold text-sm tracking-wider uppercase">Casos de Estudio</span>
+                <span class="text-slate-500 text-xs font-mono">Diapositiva 11/14</span>
+            </div>
+            
+            <div class="my-auto">
+                <h3 class="text-2xl font-bold text-white mb-2">Ejemplo Real 2: Reportes de la Escuela</h3>
+                <p class="text-slate-400 text-xs md:text-sm mb-6">Un sistema para rastrear incidentes de ventanas rotas en las aulas de un centro escolar:</p>
+                
+                <!-- Lienzo del diagrama -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center p-6 bg-slate-950/40 rounded-xl border border-[#22325a]">
+                    
+                    <!-- Clase: Escuela -->
+                    <div class="bg-slate-900 border-2 border-brand-teal rounded-lg font-mono text-[9px] overflow-hidden shadow-xl">
+                        <div class="bg-[#111c3a] p-2 text-center font-bold text-white border-b border-[#22325a]">Escuela</div>
+                        <div class="p-2 border-b border-[#22325a] space-y-1 text-slate-300">
+                            <div>+ id_escuela : int</div>
+                            <div>+ nombre : String</div>
+                            <div>+ direccion : String</div>
+                        </div>
+                        <div class="p-2 text-slate-300">
+                            <div>+ reportarDañado()</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Línea conector central -->
+                    <div class="flex flex-col items-center justify-center font-mono">
+                        <span class="text-[9px] text-brand-violet mb-1">Composición (◆--)</span>
+                        <svg width="100" height="20" class="w-full">
+                            <!-- Rombo de composición a la izquierda (Escuela tiene Reportes) -->
+                            <polygon points="0,10 10,4 20,10 10,16" fill="#a78bfa" />
+                            <line x1="20" y1="10" x2="100" y2="10" stroke="#a78bfa" stroke-width="2" />
+                            <!-- Pata de gallo a la derecha -->
+                            <line x1="90" y1="10" x2="100" y2="3" stroke="#a78bfa" stroke-width="2" />
+                            <line x1="90" y1="10" x2="100" y2="17" stroke="#a78bfa" stroke-width="2" />
+                        </svg>
+                        <span class="text-[9px] text-slate-500 mt-1">Si la Escuela cierra, los reportes se eliminan</span>
+                    </div>
+
+                    <!-- Clase: ReporteIncidente -->
+                    <div class="bg-slate-900 border-2 border-brand-violet rounded-lg font-mono text-[9px] overflow-hidden shadow-xl">
+                        <div class="bg-[#111c3a] p-2 text-center font-bold text-white border-b border-[#22325a]">ReporteIncidente</div>
+                        <div class="p-2 border-b border-[#22325a] space-y-1 text-slate-300">
+                            <div>+ id_reporte : int</div>
+                            <div>+ cantidad_ventanas : int</div>
+                            <div>+ fecha : Date</div>
+                        </div>
+                        <div class="p-2 text-slate-300">
+                            <div>+ esUrgente() : bool</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <p class="text-slate-300 text-xs mt-4 text-center bg-slate-900 p-2.5 rounded border border-[#22325a]">
+                    <i class="fa-solid fa-shield text-brand-violet mr-2"></i> **Explicación del rombo relleno:** Los reportes de incidentes no tienen sentido físico o legal si la **Escuela** deja de existir, por eso modelamos con **Composición**.
+                </p>
+            </div>
+
+            <!-- NOTAS METODOLÓGICAS -->
+            <div class="teacher-notes hidden mt-6 p-4 bg-amber-950/40 border-l-4 border-amber-500 rounded text-xs text-amber-200">
+                <h5 class="font-bold mb-1"><i class="fa-solid fa-chalkboard-user"></i> NOTA METODOLÓGICA:</h5>
+                Muestre la diferencia entre asociación libre y composición. Esto enseña a los estudiantes que el diseño de software no es solo dibujar líneas, sino definir reglas lógicas de existencia de los datos.
+            </div>
+        </section>
+
+        <!-- ================= DIAPOSITIVA 12: QUIZ DE AUTOEVALUACIÓN ================= -->
+        <section id="slide12" class="slide-transition w-full bg-[#111c3e] border border-[#22356b] rounded-2xl p-8 md:p-12 shadow-2xl flex flex-col justify-between min-h-[580px] hidden">
+            <div class="flex justify-between items-start">
+                <span class="text-brand-cyan font-semibold text-sm tracking-wider uppercase">Kahoot Integrado</span>
+                <span class="text-slate-500 text-xs font-mono">Diapositiva 12/14</span>
+            </div>
+            
+            <div class="my-auto">
+                <h3 class="text-2xl font-bold text-white mb-2">Desafío Estructural</h3>
+                <p class="text-slate-400 text-xs md:text-sm mb-4">Demuestra tus conocimientos respondiendo las siguientes preguntas lógicas sobre diseño estructural:</p>
+                
+                <div class="bg-slate-900 border border-[#22325a] rounded-xl p-6" id="quizContainer">
+                    <span class="text-brand-cyan font-mono text-xs block mb-2" id="quizIndex">Pregunta 1 de 3</span>
+                    <h4 class="text-sm md:text-base font-bold text-white mb-4" id="quizQuestion">¿Qué sección de una clase UML representa una acción o comportamiento?</h4>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="quizOptions">
+                        <!-- Botones de opción inyectados vía JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- NOTAS METODOLÓGICAS -->
+            <div class="teacher-notes hidden mt-6 p-4 bg-amber-950/40 border-l-4 border-amber-500 rounded text-xs text-amber-200">
+                <h5 class="font-bold mb-1"><i class="fa-solid fa-chalkboard-user"></i> NOTA METODOLÓGICA:</h5>
+                Use esta diapositiva de manera lúdica en el salón. Puede pedirles que voten alzando la mano por cada opción para evaluar el aprendizaje de manera rápida y directa.
+            </div>
+        </section>
+
+        <!-- ================= DIAPOSITIVA 13: RESUMEN GENERAL ================= -->
+        <section id="slide13" class="slide-transition w-full bg-[#111c3e] border border-[#22356b] rounded-2xl p-8 md:p-12 shadow-2xl flex flex-col justify-between min-h-[580px] hidden">
+            <div class="flex justify-between items-start">
+                <span class="text-brand-cyan font-semibold text-sm tracking-wider uppercase">Resumen</span>
+                <span class="text-slate-500 text-xs font-mono">Diapositiva 13/14</span>
+            </div>
+            
+            <div class="my-auto">
+                <h3 class="text-2xl md:text-3xl font-bold text-white mb-6 text-center">Las Reglas de Oro del Modelador</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-slate-900/60 p-5 rounded-xl border border-[#22325a] text-center">
+                        <div class="w-12 h-12 bg-brand-cyan/10 text-brand-cyan rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fa-solid fa-shapes text-lg"></i>
+                        </div>
+                        <h4 class="font-bold text-white mb-2 text-xs md:text-sm">Entidades vs Clases</h4>
+                        <p class="text-slate-400 text-xs leading-relaxed">Las entidades de las bases de datos guardan **Atributos**. Las clases de programación suman **Métodos** (acciones).</p>
+                    </div>
+                    
+                    <div class="bg-slate-900/60 p-5 rounded-xl border border-[#22325a] text-center">
+                        <div class="w-12 h-12 bg-brand-violet/10 text-brand-violet rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fa-solid fa-code-branch text-lg"></i>
+                        </div>
+                        <h4 class="font-bold text-white mb-2 text-xs md:text-sm">Las Líneas Importan</h4>
+                        <p class="text-slate-400 text-xs leading-relaxed">Las líneas continuas unen datos; las discontinuas indican dependencia; los rombos indican posesión y ciclo de vida.</p>
+                    </div>
+                    
+                    <div class="bg-slate-900/60 p-5 rounded-xl border border-[#22325a] text-center">
+                        <div class="w-12 h-12 bg-brand-emerald/10 text-brand-emerald rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fa-solid fa-calculator text-lg"></i>
+                        </div>
+                        <h4 class="font-bold text-white mb-2 text-xs md:text-sm">Cardinalidad Correcta</h4>
+                        <p class="text-slate-400 text-xs leading-relaxed">Ya sea con números o con "pata de gallo", define con precisión el límite numérico de la relación.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NOTAS METODOLÓGICAS -->
+            <div class="teacher-notes hidden mt-6 p-4 bg-amber-950/40 border-l-4 border-amber-500 rounded text-xs text-amber-200">
+                <h5 class="font-bold mb-1"><i class="fa-solid fa-chalkboard-user"></i> NOTA METODOLÓGICA:</h5>
+                Felicite a los alumnos. Han asimilado conceptos abstractos de nivel universitario y diseño de sistemas industriales.
+            </div>
+        </section>
+
+        <!-- ================= DIAPOSITIVA 14: RETO PLATAFORMA Y CIERRE ================= -->
+        <section id="slide14" class="slide-transition w-full bg-[#111c3e] border border-[#22356b] rounded-2xl p-8 md:p-12 shadow-2xl flex flex-col justify-between min-h-[580px] hidden">
+            <div class="flex justify-between items-start">
+                <span class="text-brand-cyan font-semibold text-sm tracking-wider uppercase">Fase Práctica</span>
+                <span class="text-slate-500 text-xs font-mono">Diapositiva 14/14</span>
+            </div>
+            
+            <div class="my-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="space-y-4">
+                        <div class="bg-brand-teal/10 text-brand-cyan border border-brand-teal/20 px-3 py-1.5 rounded-lg text-xs font-bold inline-block">
+                            <i class="fa-solid fa-code mr-1"></i> Desafío del Alumno
+                        </div>
+                        <h3 class="text-2xl md:text-3xl font-extrabold text-white">¡Hora de Construir tus Propios Planos!</h3>
+                        <p class="text-slate-400 text-xs md:text-sm leading-relaxed">
+                            Es momento de entrar a la plataforma de aprendizaje de Mars para poner en marcha estos conceptos y diseñar tus propios diagramas estructurales interactivos.
+                        </p>
+                        <div class="bg-slate-950 p-4 rounded-xl border border-[#22325a] space-y-2 text-xs">
+                            <div class="text-slate-300 flex items-center gap-2">
+                                <i class="fa-solid fa-laptop-code text-brand-teal"></i>
+                                <span>Plataforma: <strong class="text-brand-cyan font-mono">mars.alg.academy</strong></span>
+                            </div>
+                            <div class="text-slate-300 flex items-center gap-2">
+                                <i class="fa-solid fa-star text-yellow-400 animate-spin"></i>
+                                <span>Proyecto: <strong>"Base de datos: desarrollo de estructura"</strong></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-center">
+                        <div class="text-center p-8 bg-slate-950 border border-[#22325a] rounded-2xl relative w-full max-w-sm">
+                            <div class="absolute top-0 right-0 transform translate-x-3 -translate-y-3 bg-brand-violet text-white font-bold text-[10px] px-2.5 py-1 rounded-full uppercase animate-pulse">
+                                ¡Activo!
+                            </div>
+                            <i class="fa-solid fa-compass-drafting text-6xl text-brand-cyan mb-4 animate-pulse"></i>
+                            <h4 class="font-bold text-white text-base">Ingresar al Laboratorio</h4>
+                            <p class="text-[11px] text-slate-500 mt-2">Crea tu avatar de modelador de software, arrastra las cajas estructuradas y resuelve las misiones del espacio.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NOTAS METODOLÓGICAS -->
+            <div class="teacher-notes hidden mt-6 p-4 bg-amber-950/40 border-l-4 border-amber-500 rounded text-xs text-amber-200">
+                <h5 class="font-bold mb-1"><i class="fa-solid fa-chalkboard-user"></i> NOTA METODOLÓGICA:</h5>
+                Indique a los alumnos que abran su cuenta de estudiante en la plataforma. Apoye a aquellos que tengan dudas iniciales al acomodar atributos y relaciones en las misiones.
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Controles de Navegación Inferior -->
+    <footer class="bg-[#111c3a] border-t border-[#22325a] px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4 z-50">
+        <div class="flex items-center gap-2">
+            <button onclick="prevSlide()" class="bg-[#0b132a] hover:bg-brand-darkBlue border border-[#475569] text-white font-semibold py-2 px-4 rounded-xl text-xs transition flex items-center gap-2">
+                <i class="fa-solid fa-arrow-left"></i> Anterior
+            </button>
+            <button onclick="nextSlide()" class="bg-brand-teal text-[#0b132a] font-bold py-2 px-5 rounded-xl text-xs transition flex items-center gap-2">
+                Siguiente <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+        
+        <!-- Indicador de progreso de la diapositiva -->
+        <div class="flex items-center gap-3 w-full md:w-1/3">
+            <span class="text-[10px] text-slate-400 font-mono">Progreso:</span>
+            <div class="bg-slate-800 rounded-full h-2 w-full overflow-hidden">
+                <div id="progressBar" class="bg-brand-cyan h-full transition-all duration-300" style="width: 7.14%;"></div>
+            </div>
+            <span id="progressIndicatorText" class="text-xs text-slate-400 font-mono">1/14</span>
+        </div>
+    </footer>
+
+    <script>
+        // Inicialización de Variables de la Presentación
+        let currentSlide = 1;
+        const totalSlides = 14;
+        let teacherMode = false;
+
+        // Interactividad de la Diapositiva 5 (Anatomía de la clase)
+        function highlightUMLPart(part) {
+            const specTitle = document.getElementById('specimenTitle');
+            const specDesc = document.getElementById('specimenDesc');
+            const boxes = document.querySelectorAll('#umlSpecimenBox > div');
+            
+            // Limpiar clases activas
+            boxes.forEach(box => box.classList.remove('bg-brand-teal/10', 'bg-brand-violet/10', 'bg-brand-emerald/10', 'glow-active'));
+
+            if (part === 'name') {
+                boxes[0].classList.add('bg-brand-teal/10', 'glow-active');
+                specTitle.textContent = "Sección 1: Nombre de la Clase";
+                specTitle.className = "font-bold text-brand-cyan text-sm mb-2";
+                specDesc.innerHTML = "Representa el concepto central. <br><br><strong>Reglas de estilo:</strong><br>• Debe ir en <strong>Sustantivo Singular</strong>.<br>• Siempre comienza con letra <strong>Mayúscula</strong> (CamelCase).<br>• Ej: <code>Estudiante</code>, <code>Escuela</code>, <code>Vehiculo</code>.";
+            } else if (part === 'attrs') {
+                boxes[1].classList.add('bg-brand-violet/10', 'glow-active');
+                specTitle.textContent = "Sección 2: Atributos (Características)";
+                specTitle.className = "font-bold text-brand-violet text-sm mb-2";
+                specDesc.innerHTML = "Define los datos o variables que guarda la clase. <br><br><strong>Sintaxis UML:</strong><br><code>[Visibilidad] nombreAtributo : tipoDato</code><br><br>• El signo <code>+</code> significa <strong>Público</strong> (cualquiera lo lee).<br>• El signo <code>-</code> significa <strong>Privado</strong> (solo la clase lo ve).";
+            } else if (part === 'methods') {
+                boxes[2].classList.add('bg-brand-emerald/10', 'glow-active');
+                specTitle.textContent = "Sección 3: Métodos (Acciones)";
+                specTitle.className = "font-bold text-brand-emerald text-sm mb-2";
+                specDesc.innerHTML = "Define las funciones y acciones que puede ejecutar el objeto. <br><br><strong>Sintaxis UML:</strong><br><code>[Visibilidad] nombreMetodo(parametro : Tipo) : tipoRetorno</code><br><br>• Los paréntesis indican acción.<br>• El tipo al final (ej. <code>: float</code>) es el resultado que devuelve la función.";
+            }
+        }
+
+        // Interactividad de la Diapositiva 6 (Simulador de tipos de líneas)
+        function selectRelationLine(type) {
+            const path = document.getElementById('relationSVGPath');
+            const arrow = document.getElementById('relationSVGArrow');
+            const rTitle = document.getElementById('relationTitle');
+            const rDesc = document.getElementById('relationDesc');
+            const buttons = document.querySelectorAll('.relation-tab-btn');
+
+            // Actualizar botones activos
+            buttons.forEach(btn => {
+                btn.className = "relation-tab-btn w-full text-left bg-slate-900 border border-[#22325a] hover:border-brand-teal/50 p-3 rounded-xl transition flex items-center gap-3";
+            });
+
+            const event = window.event;
+            if (event && event.currentTarget) {
+                event.currentTarget.className = "relation-tab-btn w-full text-left bg-brand-darkBlue border-2 border-brand-teal p-3 rounded-xl transition flex items-center gap-3";
+            }
+
+            if (type === 'association') {
+                path.setAttribute('stroke', '#22d3ee');
+                path.setAttribute('stroke-dasharray', '0'); // Continua
+                arrow.setAttribute('fill', '#22d3ee');
+                rTitle.textContent = "Asociación Directa";
+                rTitle.className = "font-bold text-brand-cyan text-xs mb-1";
+                rDesc.textContent = "Representa una conexión estándar entre dos clases que se necesitan para funcionar, pero que tienen ciclos de vida independientes.";
+            } else if (type === 'dependency') {
+                path.setAttribute('stroke', '#a78bfa');
+                path.setAttribute('stroke-dasharray', '5,5'); // Discontinua
+                arrow.setAttribute('fill', '#a78bfa');
+                rTitle.textContent = "Dependencia (Usa un...)";
+                rTitle.className = "font-bold text-brand-violet text-xs mb-1";
+                rDesc.textContent = "La Clase A utiliza temporalmente a la Clase B en uno de sus métodos. Si la estructura de la Clase B cambia de forma radical, la Clase A se verá afectada.";
+            }
+        }
+
+        // Cuestionario Interactivo
+        const quizData = [
+            {
+                question: "¿Qué sección de una clase UML representa una acción o comportamiento?",
+                options: [
+                    "La sección superior (Nombre)",
+                    "La sección intermedia (Atributos)",
+                    "La sección inferior (Métodos)",
+                    "Ninguna, las acciones no se dibujan"
+                ],
+                correct: 2
+            },
+            {
+                question: "¿Cuál es el propósito del conector de rombo relleno (Composición)?",
+                options: [
+                    "Indica que si la clase principal se destruye, las clases contenidas también se eliminan.",
+                    "Indica una herencia de propiedades simples.",
+                    "Indica que un objeto puede existir de forma independiente sin su contenedor.",
+                    "Representa un método público."
+                ],
+                correct: 0
+            },
+            {
+                question: "En la notación Pata de Gallo (Crow's Foot), ¿cómo se representa 'Cero o Muchos'?",
+                options: [
+                    "Dos líneas paralelas verticales",
+                    "Un tridente con un pequeño anillo o círculo vacío detrás",
+                    "Un rombo de color violeta sólido",
+                    "Un tridente con una línea vertical sólida"
+                ],
+                correct: 1
+            }
+        ];
+
+        let currentQuizIndex = 0;
+
+        function loadQuizQuestion() {
+            const questionEl = document.getElementById('quizQuestion');
+            const optionsContainer = document.getElementById('quizOptions');
+            const indexEl = document.getElementById('quizIndex');
+
+            const currentData = quizData[currentQuizIndex];
+            indexEl.textContent = `Pregunta ${currentQuizIndex + 1} de ${quizData.length}`;
+            questionEl.textContent = currentData.question;
+            optionsContainer.innerHTML = '';
+
+            currentData.options.forEach((opt, idx) => {
+                const button = document.createElement('button');
+                button.className = "w-full text-left bg-slate-800 hover:bg-slate-700/60 border border-slate-700/60 hover:border-brand-teal p-3.5 rounded-xl text-xs text-slate-300 font-medium transition duration-200";
+                button.textContent = opt;
+                button.onclick = () => checkQuizAnswer(idx);
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        function checkQuizAnswer(selectedIdx) {
+            const currentData = quizData[currentQuizIndex];
+            const buttons = document.querySelectorAll('#quizOptions button');
+            
+            buttons.forEach((btn, idx) => {
+                btn.disabled = true;
+                if (idx === currentData.correct) {
+                    btn.className = "w-full text-left bg-emerald-950/40 text-emerald-400 border border-emerald-500/50 p-3.5 rounded-xl text-xs font-bold transition duration-200";
+                } else if (idx === selectedIdx) {
+                    btn.className = "w-full text-left bg-red-950/40 text-red-400 border border-red-500/50 p-3.5 rounded-xl text-xs font-bold transition duration-200";
+                }
+            });
+
+            setTimeout(() => {
+                if (currentQuizIndex < quizData.length - 1) {
+                    currentQuizIndex++;
+                    loadQuizQuestion();
+                } else {
+                    // Cuestionario completo
+                    const container = document.getElementById('quizContainer');
+                    container.className = "bg-slate-900 border border-brand-teal/30 rounded-2xl p-8 text-center";
+                    container.innerHTML = `
+                        <i class="fa-solid fa-square-check text-4xl text-brand-teal mb-3 animate-bounce"></i>
+                        <h4 class="text-white font-bold text-base mb-2">¡Cuestionario Completado!</h4>
+                        <p class="text-slate-400 text-xs mb-4">Has respondido satisfactoriamente las preguntas clave sobre modelado de diagramas UML.</p>
+                        <button onclick="resetQuiz()" class="bg-brand-teal text-[#0b132b] font-bold px-4 py-2 rounded-lg text-xs hover:scale-105 transition">Repetir Cuestionario</button>
+                    `;
+                }
+            }, 1800);
+        }
+
+        function resetQuiz() {
+            currentQuizIndex = 0;
+            const container = document.getElementById('quizContainer');
+            container.className = "bg-slate-900 border border-[#22325a] rounded-xl p-6";
+            container.innerHTML = `
+                <span class="text-brand-cyan font-mono text-xs block mb-2" id="quizIndex">Pregunta 1 de 3</span>
+                <h4 class="text-sm md:text-base font-bold text-white mb-4" id="quizQuestion">¿Qué sección de una clase UML representa una acción o comportamiento?</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="quizOptions"></div>
+            `;
+            loadQuizQuestion();
+        }
+
+        // Cargar primera pregunta del quiz
+        loadQuizQuestion();
+
+        // Navegación de Diapositivas
+        function showSlide(index) {
+            if (index < 1 || index > totalSlides) return;
+            
+            // Ocultar todas las diapositivas
+            for (let i = 1; i <= totalSlides; i++) {
+                const s = document.getElementById(`slide${i}`);
+                if (s) s.classList.add('hidden');
+            }
+
+            // Mostrar activa
+            const activeSlide = document.getElementById(`slide${index}`);
+            if (activeSlide) activeSlide.classList.remove('hidden');
+
+            // Actualizar barra de progreso
+            const bar = document.getElementById('progressBar');
+            const percent = (index / totalSlides) * 100;
+            bar.style.width = `${percent}%`;
+
+            document.getElementById('progressIndicatorText').textContent = `${index}/${totalSlides}`;
+            currentSlide = index;
+            
+            // Actualizar vista metodológica si está encendido
+            updateTeacherNotesVisibility();
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                showSlide(currentSlide + 1);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 1) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        // Modo Vista de Profesor (Mostrar/Ocultar Notas)
+        function toggleTeacherMode() {
+            teacherMode = !teacherMode;
+            const badge = document.getElementById('teacherBadge');
+            const btn = document.getElementById('teacherModeBtn');
+            const eye = document.getElementById('teacherEyeIcon');
+
+            if (teacherMode) {
+                badge.textContent = "ON";
+                badge.className = "bg-brand-teal/20 text-brand-cyan text-[10px] font-bold px-1.5 py-0.2 rounded animate-pulse";
+                btn.classList.add('border-brand-teal');
+                eye.className = "fa-solid fa-eye text-brand-cyan";
+            } else {
+                badge.textContent = "OFF";
+                badge.className = "bg-red-500/20 text-red-400 text-[10px] font-bold px-1.5 py-0.2 rounded";
+                btn.classList.remove('border-brand-teal');
+                eye.className = "fa-solid fa-eye text-brand-teal";
+            }
+            updateTeacherNotesVisibility();
+        }
+
+        function updateTeacherNotesVisibility() {
+            const notes = document.querySelectorAll('.teacher-notes');
+            notes.forEach(note => {
+                if (teacherMode) {
+                    note.classList.remove('hidden');
+                } else {
+                    note.classList.add('hidden');
+                }
+            });
+        }
+
+        // Soporte para flechas de teclado
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowRight') {
+                nextSlide();
+            } else if (event.key === 'ArrowLeft') {
+                prevSlide();
+            }
+        });
+
+        // Modo Pantalla Completa
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.error(`Error al intentar activar pantalla completa: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+    </script>
+</body>
+</html>
